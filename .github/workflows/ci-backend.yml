@@ -28,6 +28,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '18.18.1'
+        cache: 'npm'
 
     - name: Install Dependencies (game_auth)
       run: npm install
@@ -37,7 +38,7 @@ jobs:
       run: npm test
       working-directory: ./Game_auth
       env:
-        PGHOST: db
+        PGHOST: localhost
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
