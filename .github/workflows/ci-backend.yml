@@ -1,4 +1,4 @@
-name: CI Backend
+name: CI for Node Projects
 
 on:
   push:
@@ -7,19 +7,28 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  build-and-test-game-auth:
+  build-and-test:
     runs-on: ubuntu-latest
-
+    
     services:
       postgres:
-        image: postgres
+        image: postgres:latest
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: dbGameMarket
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        # Opciones para asegurar que el servicio esté listo antes de continuar.
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      matrix:
+        project: ['Game_auth', 'GameSocket', 'game-marketplace']
 
     steps:
     - uses: actions/checkout@v2
@@ -30,28 +39,15 @@ jobs:
         node-version: '18.18.1'
         cache: 'npm'
 
-    - name: Install Dependencies for Game_auth
+    - name: Install Dependencies
       run: npm install
-      working-directory: ./Game_auth
+      working-directory: ./${{ matrix.project }}
 
-    - name: Run Tests for Game_auth
+    - name: Run Tests
       run: npm test
-      working-directory: ./Game_auth
+      working-directory: ./${{ matrix.project }}
       env:
         PGHOST: localhost
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
-    - name: Cache npm dependencies
-      uses: actions/cache@v2
-      with:
-        path: |
-          Game_auth/node_modules
-          game-marketplace/node_modules
-          GameSocket/node_modules
-        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-            ${{ runner.os }}-npm-
-    - name: List files in the Game_auth directory
-      run: ls -la Game_auth
-
