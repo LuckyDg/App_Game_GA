@@ -1,15 +1,70 @@
 // videojuegoController.test.ts
-import request from 'supertest';
-import app from '../app'; // Asegúrate de exportar tu app correctamente
+//import request from 'supertest';
+//import app from '../app'; // Asegúrate de exportar tu app correctamente
 // const { server } = require('../app');
-describe('GET /api/videojuegos', () => {
-    it('debería obtener todos los videojuegos', async () => {
-        const res = await request(app).get('/api/videojuegos');
-        expect(res.statusCode).toEqual(200);
-        // Aquí podrías verificar también el contenido de la respuesta
-    });
-});
+//describe('GET /api/videojuegos', () => {
+//    it('debería obtener todos los videojuegos', async () => {
+//        const res = await request(app).get('/api/videojuegos');
+//        expect(res.statusCode).toEqual(200);
+//        // Aquí podrías verificar también el contenido de la respuesta
+//    });
+//});
 
 // afterAll((done) => {
 //     server.close(done); // Cierra el servidor
 // });
+
+import request from 'supertest';
+import app from '../app';
+// eslint-disable-next-line no-unused-vars
+import * as videojuegoService from '../services/videojuego';
+
+// Crea el mock de la función específica
+const mockFindAllVideojuegos = jest.fn();
+
+// Mockea el módulo y especifica la implementación mockeada para findAllVideojuegos
+jest.mock('../services/videojuego', () => ({
+  findAllVideojuegos: mockFindAllVideojuegos,
+}));
+
+describe('GET /api/videojuegos', () => {
+  beforeAll(() => {
+    // Usa el mock específico para definir el valor resuelto
+    mockFindAllVideojuegos.mockResolvedValue([
+      {
+        id: 1,
+        titulo: 'Videojuego Mockeado',
+        descripcion: 'Una descripción mockeada',
+        precio: 50,
+        genero: 'Aventura',
+        plataforma: 'PC',
+        fecha_lanzamiento: new Date('2020-01-01'),
+        stock: 5,
+        fecha_creacion: new Date('2020-01-01'),
+      },
+    ]);
+  });
+
+  it('debería obtener todos los videojuegos', async () => {
+    const res = await request(app).get('/api/videojuegos');
+    expect(res.statusCode).toEqual(200);
+    // Verifica que el cuerpo de la respuesta contenga los datos mockeados
+    expect(res.body).toEqual([
+      {
+        id: 1,
+        titulo: 'Videojuego Mockeado',
+        descripcion: 'Una descripción mockeada',
+        precio: 50,
+        genero: 'Aventura',
+        plataforma: 'PC',
+        fecha_lanzamiento: new Date('2020-01-01'),
+        stock: 5,
+        fecha_creacion: new Date('2020-01-01'),
+      },
+    ]);
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+  });
+});
