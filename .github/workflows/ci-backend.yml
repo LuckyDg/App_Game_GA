@@ -42,3 +42,16 @@ jobs:
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          Game_auth/node_modules
+          game-marketplace/node_modules
+          GameSocket/node_modules
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+            ${{ runner.os }}-npm-
+    - name: List files in the Game_auth directory
+      run: ls -la Game_auth
+
