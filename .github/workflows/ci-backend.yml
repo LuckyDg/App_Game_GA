@@ -13,7 +13,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
+    
     services:
       postgres:
         image: postgres:latest
@@ -36,12 +36,11 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18'
+        node-version: '18.18.1'
         cache: 'npm'
 
     - name: Install and Test Game_auth
       run: |
-        echo "Installing and testing Game_auth"
         cd Game_auth
         npm install
         npm test
@@ -53,7 +52,6 @@ jobs:
 
     - name: Install and Test GameSocket
       run: |
-        echo "Installing and testing GameSocket"
         cd GameSocket
         npm install
         npm test
@@ -65,18 +63,6 @@ jobs:
 
     - name: Install and Test game-marketplace
       run: |
-        echo "Installing and testing game-marketplace"
         cd game-marketplace
         npm install
         npm test
-
-    - name: Cache npm dependencies
-      uses: actions/cache@v2
-      with:
-        path: |
-          Game_auth/node_modules
-          GameSocket/node_modules
-          game-marketplace/node_modules
-        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-npm-
