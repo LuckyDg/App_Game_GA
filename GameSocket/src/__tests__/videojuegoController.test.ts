@@ -55,25 +55,17 @@
 // });
 
 
+import request from 'supertest';
+import app from '../app';
 import * as videojuegoService from '../services/videojuego';
 
-// Crea el mock de la función específica
-const mockFindAllVideojuegos = jest.fn();
-
-// Mockea el módulo y especifica la implementación mockeada para findAllVideojuegos
-jest.mock('../services/videojuego', () => ({
-  findAllVideojuegos: mockFindAllVideojuegos,
-}));
+// Mockea el módulo antes de definir el mock específico
+jest.mock('../services/videojuego');
 
 describe('Videojuegos Service Tests', () => {
-  beforeEach(() => {
-    // Limpia las instancias previas y las llamadas a la función antes de cada prueba
-    mockFindAllVideojuegos.mockClear();
-  });
-
-  it('findAllVideojuegos ha sido llamado', async () => {
-    // Configura el mock para devolver un valor específico
-    mockFindAllVideojuegos.mockResolvedValue([
+  beforeAll(() => {
+    // Crea el mock de la función específica directamente en el objeto mockeado
+    videojuegoService.findAllVideojuegos = jest.fn().mockResolvedValue([
       {
         id: 1,
         titulo: 'Videojuego Mockeado',
@@ -86,14 +78,12 @@ describe('Videojuegos Service Tests', () => {
         fecha_creacion: new Date('2020-01-01'),
       },
     ]);
+  });
 
-    // Llama al método findAllVideojuegos mockeado
-    const videojuegos = await videojuegoService.findAllVideojuegos();
-
-    // Verifica que el mock haya sido llamado
-    expect(mockFindAllVideojuegos).toHaveBeenCalled();
-    // Verifica que el valor devuelto por el mock sea el esperado
-    expect(videojuegos).toEqual([
+  it('debería obtener todos los videojuegos', async () => {
+    const res = await request(app).get('/api/videojuegos');
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual([
       {
         id: 1,
         titulo: 'Videojuego Mockeado',
@@ -112,3 +102,4 @@ describe('Videojuegos Service Tests', () => {
     jest.resetAllMocks();
   });
 });
+
