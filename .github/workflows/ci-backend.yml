@@ -42,3 +42,8 @@ jobs:
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
+        
+    - name: List directory contents
+      run: ls -la
+      working-directory: ./Game_auth
+
