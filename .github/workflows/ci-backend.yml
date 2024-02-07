@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  build-and-test:
+  build-and-test-game-auth:
     runs-on: ubuntu-latest
 
     services:
@@ -29,12 +29,13 @@ jobs:
       with:
         node-version: '18.18.1'
         cache: 'npm'
+        working-directory: Game_auth
 
-    - name: Install Dependencies (game_auth)
+    - name: Install Dependencies for Game_auth
       run: npm install
       working-directory: ./Game_auth
 
-    - name: Run Tests (game_auth)
+    - name: Run Tests for Game_auth
       run: npm test
       working-directory: ./Game_auth
       env:
@@ -42,8 +43,3 @@ jobs:
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
-        
-    - name: List directory contents
-      run: ls -la
-      working-directory: ./Game_auth
-
