@@ -1,0 +1,69 @@
+/* login.component.css */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #121212; /* Fondo oscuro */
+}
+
+.login-form {
+  padding: 40px;
+  background: #333; /* Fondo del formulario */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+  width: 100%;
+  max-width: 400px;
+  color: #e0e0e0; /* Texto claro */
+}
+
+.login-form h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #fff; /* Título claro */
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  color: #bbb; /* Color del label */
+}
+
+.form-group input {
+  width: 90%;
+  padding: 12px 20px;
+  background-color: #222; /* Fondo de los inputs */
+  border: 1px solid #555; /* Borde de los inputs */
+  border-radius: 5px;
+  color: #ddd; /* Texto de los inputs */
+}
+
+.form-group input::placeholder {
+  color: #999;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #0069d9; /* Botón más vibrante */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.login-button:hover {
+  background-color: #0056b3; /* Botón oscuro al hacer hover */
+  transform: translateY(-2px); /* Efecto de elevación */
+}
+
+.login-button:active {
+  background-color: #004494; /* Botón aún más oscuro al presionar */
+  transform: translateY(1px); /* Efecto de hundimiento */
+}

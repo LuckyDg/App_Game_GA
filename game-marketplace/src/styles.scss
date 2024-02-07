@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    /* Fondo oscuro */
+    color: #e0e0e0;
+    /* Texto claro */
+}
+
+a {
+    color: #bb86fc;
+}
+
+a:hover {
+    color: #3700b3;
+}
+
+.connection-status {
+    text-align: right;
+    padding: 10px;
+    background-color: #333;
+}
+
+.connected {
+    color: #4caf50;
+}
+
+.disconnected {
+    color: #f44336;
+}

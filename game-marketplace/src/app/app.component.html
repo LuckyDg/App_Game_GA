@@ -1,0 +1,6 @@
+<!-- src/app/app.component.html -->
+<div class="connection-status">
+  <span *ngIf="socketService.isConnected" class="connected">Conectado</span>
+  <span *ngIf="!socketService.isConnected" class="disconnected">Desconectado</span>
+</div>
+<router-outlet></router-outlet>

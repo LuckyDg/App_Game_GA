@@ -1,0 +1,29 @@
+/* src/app/components/videojuegos/videojuegos-list/videojuegos-list.component.css */
+
+.videojuegos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 10px;
+}
+
+.videojuego-card {
+  background-color: #1e1e1e; /* Fondo de la tarjeta */
+  border: 1px solid #333; /* Borde más sutil */
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  transition: transform 0.3s ease; /* Animación al pasar el mouse */
+}
+
+.videojuego-card:hover {
+  transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
+}
+
+.genre {
+  background-color: #bb86fc; /* Color de fondo para el género */
+  color: #3700b3; /* Color de texto para el género */
+  border-radius: 4px;
+  padding: 5px 10px;
+}

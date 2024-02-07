@@ -1,0 +1,11 @@
+<div *ngIf="videojuego" class="videojuego-detail">
+    <h2>{{ videojuego.titulo }}</h2>
+    <p>{{ videojuego.descripcion }}</p>
+    <ul>
+      <li>Género: {{ videojuego.genero }}</li>
+      <li>Plataforma: {{ videojuego.plataforma }}</li>
+      <li>Precio: {{ videojuego.precio | currency }}</li>
+      <!-- Agrega más detalles según sea necesario -->
+    </ul>
+  </div>
+  

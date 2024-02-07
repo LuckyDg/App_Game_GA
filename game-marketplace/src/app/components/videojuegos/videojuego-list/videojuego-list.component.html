@@ -1,0 +1,11 @@
+<!-- src/app/components/videojuegos/videojuegos-list/videojuegos-list.component.html -->
+
+<div class="videojuegos-container">
+    <div *ngFor="let videojuego of videojuegos" class="videojuego-card">
+      <h3>{{ videojuego.titulo }}</h3>
+      <p>{{ videojuego.descripcion }}</p>
+      <span class="genre">{{ videojuego.genero }}</span>
+      <!-- Otros detalles aquí -->
+    </div>
+  </div>
+  

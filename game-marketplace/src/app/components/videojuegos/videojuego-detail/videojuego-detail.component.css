@@ -1,0 +1,23 @@
+/* src/app/components/videojuegos/videojuego-detail/videojuego-detail.component.css */
+
+.videojuego-detail {
+  color: #fff;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.videojuego-detail h2 {
+  color: #bb86fc;
+}
+
+.videojuego-detail ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.videojuego-detail ul li {
+  margin-bottom: 10px;
+}
