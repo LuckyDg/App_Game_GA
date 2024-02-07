@@ -1,14 +1,10 @@
-name: Full CI Workflow
+name: CI Workflow for Node.js Projects
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
 
 jobs:
   build-and-test:
@@ -36,33 +32,58 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18.18.1'
+        node-version: '18'
         cache: 'npm'
+    
+    - name: Cache npm dependencies for Game_auth
+      uses: actions/cache@v2
+      with:
+        path: Game_auth/node_modules
+        key: game-auth-${{ hashFiles('Game_auth/package-lock.json') }}
+        restore-keys: |
+          game-auth-
 
-    - name: Install and Test Game_auth
-      run: |
-        cd Game_auth
-        npm install
-        npm test
+    - name: Install Dependencies for Game_auth
+      run: npm install
+      working-directory: Game_auth
+
+    - name: Run Tests for Game_auth
+      run: npm test
+      working-directory: Game_auth
       env:
         PGHOST: localhost
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
 
-    - name: Install and Test GameSocket
-      run: |
-        cd GameSocket
-        npm install
-        npm test
-      env:
-        PGHOST: localhost
-        PGDATABASE: dbGameMarket
-        PGUSER: postgres
-        PGPASSWORD: postgres
+    - name: Cache npm dependencies for GameSocket
+      uses: actions/cache@v2
+      with:
+        path: GameSocket/node_modules
+        key: game-socket-${{ hashFiles('GameSocket/package-lock.json') }}
+        restore-keys: |
+          game-socket-
 
-    - name: Install and Test game-marketplace
-      run: |
-        cd game-marketplace
-        npm install
-        npm test
+    - name: Install Dependencies for GameSocket
+      run: npm install
+      working-directory: GameSocket
+
+    - name: Run Tests for GameSocket
+      run: npm test
+      working-directory: GameSocket
+
+    - name: Cache npm dependencies for game-marketplace
+      uses: actions/cache@v2
+      with:
+        path: game-marketplace/node_modules
+        key: game-marketplace-${{ hashFiles('game-marketplace/package-lock.json') }}
+        restore-keys: |
+          game-marketplace-
+
+    - name: Install Dependencies for game-marketplace
+      run: npm install
+      working-directory: game-marketplace
+
+    - name: Run Tests for game-marketplace
+      run: npm test
+      working-directory: game-marketplace
