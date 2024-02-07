@@ -1,15 +1,19 @@
-name: CI for Node Projects
+name: Full CI Workflow
 
 on:
   push:
-    branches: [ main, develop ]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [ main, develop ]
+    branches:
+      - main
+      - develop
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:latest
@@ -24,25 +28,55 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '18.18.1'
         cache: 'npm'
-        
-    - name: Install Dependencies for Game_auth
-      run: npm install
-      working-directory: ./Game_auth
 
-    - name: Run Tests for Game_auth
-      run: npm test
-      working-directory: ./Game_auth
+    - name: Install and Test Game_auth
+      run: |
+        echo "Installing and testing Game_auth"
+        cd Game_auth
+        npm install
+        npm test
       env:
         PGHOST: localhost
         PGDATABASE: dbGameMarket
         PGUSER: postgres
         PGPASSWORD: postgres
+
+    - name: Install and Test GameSocket
+      run: |
+        echo "Installing and testing GameSocket"
+        cd GameSocket
+        npm install
+        npm test
+      env:
+        PGHOST: localhost
+        PGDATABASE: dbGameMarket
+        PGUSER: postgres
+        PGPASSWORD: postgres
+
+    - name: Install and Test game-marketplace
+      run: |
+        echo "Installing and testing game-marketplace"
+        cd game-marketplace
+        npm install
+        npm test
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          Game_auth/node_modules
+          GameSocket/node_modules
+          game-marketplace/node_modules
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
