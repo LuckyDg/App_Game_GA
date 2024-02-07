@@ -1,4 +1,4 @@
-name: CI Workflow for Node.js Projects
+name: CI Workflow for Node.js Projects with Subdirectories
 
 on:
   push:
@@ -9,39 +9,17 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: dbGameMarket
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
+    - name: Setup Node.js for Game_auth
       uses: actions/setup-node@v2
       with:
         node-version: '18'
         cache: 'npm'
-    
-    - name: Cache npm dependencies for Game_auth
-      uses: actions/cache@v2
-      with:
-        path: Game_auth/node_modules
-        key: game-auth-${{ hashFiles('Game_auth/package-lock.json') }}
-        restore-keys: |
-          game-auth-
+        cache-dependency-path: Game_auth/package-lock.json
 
     - name: Install Dependencies for Game_auth
       run: npm install
@@ -50,19 +28,13 @@ jobs:
     - name: Run Tests for Game_auth
       run: npm test
       working-directory: Game_auth
-      env:
-        PGHOST: localhost
-        PGDATABASE: dbGameMarket
-        PGUSER: postgres
-        PGPASSWORD: postgres
 
-    - name: Cache npm dependencies for GameSocket
-      uses: actions/cache@v2
+    - name: Setup Node.js for GameSocket
+      uses: actions/setup-node@v2
       with:
-        path: GameSocket/node_modules
-        key: game-socket-${{ hashFiles('GameSocket/package-lock.json') }}
-        restore-keys: |
-          game-socket-
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: GameSocket/package-lock.json
 
     - name: Install Dependencies for GameSocket
       run: npm install
@@ -72,13 +44,12 @@ jobs:
       run: npm test
       working-directory: GameSocket
 
-    - name: Cache npm dependencies for game-marketplace
-      uses: actions/cache@v2
+    - name: Setup Node.js for game-marketplace
+      uses: actions/setup-node@v2
       with:
-        path: game-marketplace/node_modules
-        key: game-marketplace-${{ hashFiles('game-marketplace/package-lock.json') }}
-        restore-keys: |
-          game-marketplace-
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: game-marketplace/package-lock.json
 
     - name: Install Dependencies for game-marketplace
       run: npm install
