@@ -54,32 +54,29 @@
 //   });
 // });
 
-
 import request from 'supertest';
 import app from '../app';
 import * as videojuegoService from '../services/videojuego';
 
-// Mockea el módulo antes de definir el mock específico
-jest.mock('../services/videojuego');
+// Mockea el módulo y su método findAllVideojuegos
+jest.mock('../services/videojuego', () => ({
+  ...jest.requireActual('../services/videojuego'), // Opcional: conserva las implementaciones reales de otros métodos
+  findAllVideojuegos: jest.fn().mockResolvedValue([
+    {
+      id: 1,
+      titulo: 'Videojuego Mockeado',
+      descripcion: 'Una descripción mockeada',
+      precio: 50,
+      genero: 'Aventura',
+      plataforma: 'PC',
+      fecha_lanzamiento: new Date('2020-01-01'),
+      stock: 5,
+      fecha_creacion: new Date('2020-01-01'),
+    },
+  ]),
+}));
 
-describe('Videojuegos Service Tests', () => {
-  beforeAll(() => {
-    // Crea el mock de la función específica directamente en el objeto mockeado
-    videojuegoService.findAllVideojuegos = jest.fn().mockResolvedValue([
-      {
-        id: 1,
-        titulo: 'Videojuego Mockeado',
-        descripcion: 'Una descripción mockeada',
-        precio: 50,
-        genero: 'Aventura',
-        plataforma: 'PC',
-        fecha_lanzamiento: new Date('2020-01-01'),
-        stock: 5,
-        fecha_creacion: new Date('2020-01-01'),
-      },
-    ]);
-  });
-
+describe('GET /api/videojuegos', () => {
   it('debería obtener todos los videojuegos', async () => {
     const res = await request(app).get('/api/videojuegos');
     expect(res.statusCode).toEqual(200);
@@ -97,9 +94,4 @@ describe('Videojuegos Service Tests', () => {
       },
     ]);
   });
-
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
 });
-
