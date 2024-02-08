@@ -57,6 +57,8 @@
 import request from 'supertest';
 import app from '../app';
 import * as videojuegoService from '../services/videojuego';
+import { Videojuego } from '../models/videjuego.model';
+ // Asegúrate de importar correctamente la interfaz
 
 // Mockea el módulo y su método findAllVideojuegos
 jest.mock('../services/videojuego', () => ({
@@ -81,11 +83,11 @@ describe('GET /api/videojuegos', () => {
     const res = await request(app).get('/api/videojuegos');
     expect(res.statusCode).toEqual(200);
 
-    // Asegura que las fechas sean comparadas como objetos Date
-    const expectedBody = res.body.map((videojuego) => ({
+    // Convierte las fechas de Date a string en la expectativa para la comparación
+    const expectedBody = res.body.map((videojuego: Videojuego) => ({
       ...videojuego,
-      fecha_creacion: new Date(videojuego.fecha_creacion).toISOString(),
-      fecha_lanzamiento: new Date(videojuego.fecha_lanzamiento).toISOString(),
+      fecha_creacion: videojuego.fecha_creacion.toISOString(),
+      fecha_lanzamiento: videojuego.fecha_lanzamiento ? videojuego.fecha_lanzamiento.toISOString() : null,
     }));
 
     expect(expectedBody).toEqual([
@@ -96,7 +98,7 @@ describe('GET /api/videojuegos', () => {
         precio: 50,
         genero: 'Aventura',
         plataforma: 'PC',
-        fecha_lanzamiento: '2020-01-01T00:00:00.000Z',
+        fecha_lanzamiento: '2020-01-01T00:00:00.000Z', // Asegúrate de que esto coincida con el formato esperado
         stock: 5,
         fecha_creacion: '2020-01-01T00:00:00.000Z',
       },
