@@ -78,20 +78,27 @@ jest.mock('../services/videojuego', () => ({
 
 describe('GET /api/videojuegos', () => {
   it('debería obtener todos los videojuegos', async () => {
-    const res = await request(app).get('/api/videojuegos');
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual([
-      {
-        id: 1,
-        titulo: 'Videojuego Mockeado',
-        descripcion: 'Una descripción mockeada',
-        precio: 50,
-        genero: 'Aventura',
-        plataforma: 'PC',
-        fecha_lanzamiento: new Date('2020-01-01'),
-        stock: 5,
-        fecha_creacion: new Date('2020-01-01'),
-      },
-    ]);
-  });
+  const res = await request(app).get('/api/videojuegos');
+  expect(res.statusCode).toEqual(200);
+
+  // Convierte las fechas de string a Date en la respuesta para la comparación
+  const expectedBody = res.body.map(videojuego => ({
+    ...videojuego,
+    fecha_creacion: new Date(videojuego.fecha_creacion),
+    fecha_lanzamiento: new Date(videojuego.fecha_lanzamiento)
+  }));
+
+  expect(expectedBody).toEqual([
+    {
+      id: 1,
+      titulo: 'Videojuego Mockeado',
+      descripcion: 'Una descripción mockeada',
+      precio: 50,
+      genero: 'Aventura',
+      plataforma: 'PC',
+      fecha_lanzamiento: new Date('2020-01-01T00:00:00.000Z'),
+      stock: 5,
+      fecha_creacion: new Date('2020-01-01T00:00:00.000Z'),
+    },
+  ]);
 });
