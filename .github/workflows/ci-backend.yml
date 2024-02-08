@@ -56,5 +56,5 @@ jobs:
       working-directory: game-marketplace
 
     - name: Run Tests for game-marketplace
-      run: npm test
+      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       working-directory: game-marketplace
